@@ -1,0 +1,232 @@
+// Cada subsección desarrolla un resultado de aprendizaje concreto.
+const lesson = (title, goal, paragraphs, points, example, question, answer) => ({title,goal,paragraphs,points,example,question,answer});
+window.LESSONS = {
+  1: [
+    lesson('El problema, los datos y el modelo','Identificar qué se quiere predecir y con qué información.',[
+      'El aprendizaje automático permite construir modelos que encuentran regularidades en ejemplos. A diferencia de una regla escrita manualmente para cada caso, el modelo ajusta parámetros a partir de datos. Su utilidad se comprueba al trabajar con observaciones nuevas.',
+      'Una fila representa una observación; las columnas de entrada son características o variables predictoras (X). En aprendizaje supervisado, la variable objetivo (y) contiene la respuesta conocida durante el entrenamiento. Define también cuándo se hará la predicción: solo puedes utilizar información disponible en ese momento.'
+    ],['Delimita la unidad de análisis: una vivienda, una persona, una venta o una imagen.','Formula una pregunta concreta y una medida de éxito.','Distingue los datos disponibles al predecir de la información que se conoce después.'],
+    'Para predecir ventas antes de una campaña, puedes usar presupuesto y canal publicitario. Las ventas finales son el objetivo; no pueden incluirse también como entrada.',
+    '¿Por qué conocer el objetivo no significa que se pueda usar como característica?','Porque el modelo debe predecirlo para casos nuevos donde aún se desconoce. Incluirlo entre las entradas filtraría la respuesta y produciría una evaluación engañosa.'),
+    lesson('Tipos de aprendizaje','Distinguir regresión, clasificación y agrupamiento.',[
+      'El aprendizaje supervisado utiliza pares de entradas y respuestas conocidas. Si la salida es una cantidad numérica, hablamos de regresión. Si representa una categoría, hablamos de clasificación. Que una etiqueta esté codificada con números no la convierte en una cantidad continua.',
+      'El aprendizaje no supervisado busca estructura sin una respuesta objetivo proporcionada. El clustering reúne casos similares; la reducción de dimensionalidad representa los datos con menos variables. Los resultados necesitan interpretación: un grupo encontrado no es automáticamente una categoría real.'
+    ],['Regresión: estimar precio, demanda o consumo.','Clasificación: asignar una especie o detectar un mensaje no deseado.','Clustering: descubrir segmentos de clientes según sus características.'],
+    'Predecir si una fruta es manzana, naranja o pera es clasificación, aunque se codifiquen las clases como 0, 1 y 2. Predecir su peso en gramos es regresión.',
+    'Si no tienes categorías de clientes y quieres descubrir grupos, ¿qué enfoque usarías?','Aprendizaje no supervisado, particularmente clustering. Luego analizarías qué caracteriza a cada grupo.'),
+    lesson('Preparación y calidad de los datos','Reconocer problemas que afectan el aprendizaje.',[
+      'Antes de entrenar, revisa tipos de columnas, valores faltantes, duplicados, rangos y unidades. Un dato inusual puede ser un error de captura o un caso auténtico: eliminarlo sin investigar puede borrar información importante.',
+      'Imputar, escalar y codificar son transformaciones que preparan los datos. Si una transformación aprende algo, como una media para imputar o una desviación para escalar, debe ajustarse exclusivamente con entrenamiento y aplicarse después a los otros conjuntos.'
+    ],['Comprueba que las variables numéricas no se hayan leído como texto.','Revisa si un mismo caso aparece repetido en conjuntos distintos.','Documenta cómo tratas faltantes y categorías desconocidas.'],
+    'Si falta el ingreso de algunos clientes, calcula la mediana usando entrenamiento. Usa esa misma mediana para completar validación y prueba, sin recalcularla con esas filas.',
+    '¿Es correcto borrar siempre los valores extremos?','No. Primero revisa su origen y relevancia. Pueden ser observaciones válidas; la decisión debe justificarse según el problema.'),
+    lesson('Entrenamiento, validación y prueba','Evaluar la capacidad de generalizar sin fuga de información.',[
+      'Entrenamiento sirve para aprender parámetros. Validación permite comparar alternativas y escoger configuraciones. Prueba se reserva para una evaluación final del modelo seleccionado. El buen desempeño en entrenamiento no demuestra que el modelo funcionará en otros datos.',
+      'La forma de separar debe respetar cómo se usará el modelo. En datos temporales, normalmente se entrena con el pasado y se evalúa con observaciones posteriores. Si existen varias filas de una misma persona o entidad, evita repartirlas entre conjuntos cuando eso permita reconocerla.'
+    ],['Separa antes de ajustar transformaciones.','Utiliza validación cruzada cuando convenga estimar la variabilidad entre particiones.','Reserva prueba y evita elegir modelos después de ver repetidamente sus resultados.'],
+    'Una división 70 % / 15 % / 15 % puede servir como ejemplo de entrenamiento, validación y prueba. No es una regla universal: depende del tamaño y la estructura de los datos.',
+    '¿Por qué no seleccionar el mejor modelo con la prueba final?','Porque estarías adaptando tus decisiones a esa prueba. Dejaría de representar una evaluación independiente del proceso de selección.'),
+    lesson('Matriz de confusión','Interpretar aciertos y errores en clasificación binaria.',[
+      'Primero define la clase positiva. Un verdadero positivo (VP) es un positivo real que el modelo detecta; un verdadero negativo (VN) es un negativo real correctamente descartado. Positivo no significa necesariamente algo bueno: puede representar un defecto.',
+      'Un falso positivo (FP) es una alerta incorrecta. Un falso negativo (FN) es un positivo que no se detecta. La matriz de confusión permite contar estos cuatro resultados y distinguir errores con consecuencias diferentes.'
+    ],['Especifica si las filas representan valores reales o predichos al leer una matriz.','Asocia cada tipo de error con una consecuencia concreta.','Verifica que VP + VN + FP + FN sea igual al total evaluado.'],
+    'Si «defectuoso» es positivo, rechazar un producto sano es FP. Aceptar un producto defectuoso es FN. Estos errores pueden tener costos distintos.',
+    'Un correo legítimo se marca como no deseado. Si «no deseado» es positivo, ¿qué ocurrió?','Un falso positivo: el modelo predijo la clase positiva para un caso realmente negativo.'),
+    lesson('Métricas y elección del criterio','Elegir una métrica coherente con el objetivo del modelo.',[
+      'Exactitud mide la fracción total de aciertos. Precisión mide qué proporción de las predicciones positivas es correcta; recall mide qué proporción de los positivos reales se detecta. F1 es la media armónica de precisión y recall, por lo que disminuye cuando una de las dos es baja.',
+      'Una clase muy frecuente puede hacer que la exactitud parezca excelente incluso si nunca se detecta la clase minoritaria. Examina la distribución de clases y las métricas por clase. Si un denominador vale cero, la métrica puede no estar definida; algunas bibliotecas permiten configurar cómo reportarla.'
+    ],['Prioriza precisión cuando quieras reducir alertas incorrectas.','Prioriza recall cuando sea importante detectar los positivos reales.','Reporta varias métricas junto con la matriz, sin reducir toda la evaluación a un número.'],
+    'Si 95 de 100 mensajes son legítimos, predecir siempre «legítimo» alcanza 95 % de exactitud, pero recall de correo no deseado es 0 %.',
+    '¿Puede un modelo tener exactitud alta y ser poco útil?','Sí. En el ejemplo, no detecta ningún mensaje no deseado. La utilidad depende del problema y de qué errores se están cometiendo.')
+  ],
+  2: [
+    lesson('Planteamiento de una regresión','Definir un objetivo numérico y una referencia para comparar.',[
+      'La regresión estima una cantidad a partir de características observadas. Antes de elegir un algoritmo, define las unidades de la respuesta, el momento de predicción y qué error sería aceptable. La evaluación debe ser interpretable para quien utilizará el resultado.',
+      'Una referencia sencilla, o baseline, permite saber si el modelo aporta valor. Por ejemplo, predecir siempre la media aprendida en entrenamiento. Compara referencia y modelo sobre exactamente las mismas filas de validación o prueba.'
+    ],['Identifica y y las columnas de X sin incluir información futura.','Revisa distribución, unidades y valores faltantes del objetivo.','Separa los datos y establece una referencia antes de comparar modelos.'],
+    'En consumo de combustible, y puede ser MPG y X puede incluir peso y cilindrada. Un MAE de 2 se interpreta en MPG, no en porcentaje.',
+    '¿De dónde debe salir la media de una referencia constante?','De entrenamiento. Esa media queda fija al predecir validación y prueba; recalcularla con sus respuestas aprovecharía información no disponible al predecir.'),
+    lesson('Regresión lineal simple','Interpretar la ecuación y calcular predicciones.',[
+      'La regresión lineal simple representa la predicción mediante ŷ = b₀ + b₁x. El intercepto b₀ es el valor predicho cuando x = 0. La pendiente b₁ expresa cuánto cambia la predicción al aumentar x una unidad.',
+      'El ajuste por mínimos cuadrados busca coeficientes que minimizan la suma de errores al cuadrado en entrenamiento. La recta resume una asociación; no demuestra que modificar x causará un cambio en y. Además, el intercepto puede carecer de interpretación práctica si x = 0 queda fuera del rango observado.'
+    ],['Especifica las unidades de x y de y al interpretar la pendiente.','Distingue valor observado y de valor predicho ŷ.','Comprueba si una relación aproximadamente lineal tiene sentido.'],
+    'Con ŷ = 20 + 4x, si x = 3 la predicción es 32. Si x aumenta a 4, la predicción sube a 36: cuatro unidades adicionales.',
+    '¿Qué indica una pendiente negativa?','Que la predicción disminuye cuando x aumenta. Describe una asociación dentro del modelo, sin demostrar causalidad.'),
+    lesson('Regresión lineal múltiple','Interpretar varias variables predictoras en un mismo modelo.',[
+      'En regresión múltiple se combinan varias características: ŷ = b₀ + b₁x₁ + b₂x₂ + … . Cada coeficiente describe el cambio de la predicción asociado con una unidad adicional de su característica, manteniendo fijas las otras entradas del modelo.',
+      'Las variables categóricas requieren una representación apropiada, como indicadores binarios. Cuando varias características aportan información muy parecida, los coeficientes pueden volverse inestables. Añadir columnas no garantiza una mejor generalización y complica la interpretación.'
+    ],['Revisa relaciones entre predictores y posibles columnas redundantes.','Mantén la misma representación y orden de columnas al predecir.','Compara el desempeño fuera de entrenamiento al añadir variables.'],
+    'Un modelo de ventas puede combinar inversión en TV, radio y periódico. El coeficiente de radio se interpreta manteniendo las otras inversiones constantes dentro del modelo.',
+    '¿Un coeficiente numéricamente mayor implica una variable más importante?','No necesariamente. Su magnitud depende de las unidades y de la relación con las demás variables. No compares coeficientes sin considerar sus escalas.'),
+    lesson('Residuos y diagnóstico','Detectar patrones que una métrica global puede ocultar.',[
+      'El residuo es e = y − ŷ. Un residuo positivo indica subestimación; uno negativo, sobreestimación. Representar residuos frente a predicciones ayuda a identificar estructura que el modelo dejó sin explicar.',
+      'Una curva puede sugerir una relación no lineal. Una dispersión en forma de abanico puede señalar variabilidad no constante. También conviene observar el error por segmentos: un promedio razonable puede esconder errores sistemáticos para ciertos tipos de casos.'
+    ],['Busca residuos distribuidos alrededor de cero, sin patrones claros.','Investiga errores grandes y verifica los datos correspondientes.','Compara residuos entre grupos o rangos relevantes para el problema.'],
+    'Si el modelo subestima casi todas las viviendas de precio alto y sobreestima las de precio bajo, el error presenta estructura, aunque R² sea elevado.',
+    'Dos modelos tienen igual R². ¿Por qué ver los residuos?','Porque pueden repartir el error de forma distinta. Uno podría fallar sistemáticamente en un segmento importante y el otro no.'),
+    lesson('MAE, RMSE y R²','Comparar modelos usando métricas con interpretaciones distintas.',[
+      'MAE promedia los errores absolutos y conserva las unidades del objetivo. RMSE calcula la raíz del promedio de errores cuadrados y también conserva las unidades; aumenta más ante errores grandes. Ninguna métrica sustituye la revisión de casos concretos.',
+      'R² se calcula como 1 − SSE/SST: compara el error cuadrático del modelo con la dispersión respecto a la media del objetivo del conjunto evaluado. Puede ser negativo. Si el objetivo es constante, su interpretación habitual requiere cuidado porque SST es cero.'
+    ],['Compara métricas sobre la misma partición y en las mismas unidades.','Elige MAE o RMSE según cuánto quieras penalizar errores grandes.','Acompaña R² con una métrica de error interpretable y con residuos.'],
+    'Para errores absolutos 2, 2 y 8, MAE = 4 y RMSE ≈ 4,90. La diferencia muestra el peso adicional que RMSE da al error de 8.',
+    '¿Un R² de 0,80 significa 80 % de predicciones correctas?','No. En regresión no hay necesariamente una categoría de acierto. R² describe una reducción relativa del error cuadrático frente a la referencia de su fórmula.'),
+    lesson('Regresión con una red neuronal','Relacionar la salida del modelo, la pérdida y la evaluación.',[
+      'Una red neuronal también puede predecir cantidades continuas. Para una respuesta numérica suele utilizarse una unidad de salida con activación lineal. Las capas ocultas con activaciones no lineales permiten representar relaciones más complejas que una recta.',
+      'Durante entrenamiento se minimiza una pérdida, como el error cuadrático medio. El escalado de entradas puede facilitar la optimización. Debes comparar la red con regresión lineal y revisar validación: una red puede ajustar mejor entrenamiento y aun así predecir peor en otros datos.'
+    ],['Prepara y escala usando solo entrenamiento.','Elige una salida y una pérdida coherentes con el objetivo numérico.','Compara con la referencia y revisa residuos en la misma evaluación.'],
+    'En el caso de eficiencia de combustible, prueba un modelo lineal y una red pequeña usando la misma separación. Reporta cuál reduce MAE y en qué rangos sigue fallando.',
+    '¿Cuándo justificarías usar una red en lugar de una regresión lineal?','Cuando mejore de forma consistente la evaluación relevante y esa mejora compense su mayor complejidad, costo e incertidumbre de interpretación.')
+  ],
+  3: [
+    lesson('Etiquetas y decisiones de clasificación','Definir clases y salidas antes de entrenar.',[
+      'La clasificación predice una categoría. Un problema binario tiene dos clases; uno multiclase tiene más de dos categorías mutuamente excluyentes. La codificación numérica es una representación de las etiquetas, no una escala de cantidad.',
+      'Revisa cuántos ejemplos hay de cada clase y qué errores importan. En datos independientes, una partición estratificada puede ayudar a mantener proporciones similares. Debe respetarse igualmente cualquier estructura temporal o de grupos para evitar fuga.'
+    ],['Define las clases y verifica que las etiquetas sean consistentes.','Identifica clases poco representadas y casos ambiguos.','Selecciona métricas globales y por clase.'],
+    'En frutas, 0 = manzana, 1 = naranja y 2 = pera. Predecir 2 no significa el doble de 1: son categorías diferentes.',
+    '¿Por qué revisar las cantidades por clase antes de separar?','Porque una clase escasa podría quedar mal representada, dificultando tanto el aprendizaje como una evaluación fiable de sus errores.'),
+    lesson('Comparación de clasificadores','Relacionar el algoritmo con los datos y comparar de forma justa.',[
+      'Los vecinos cercanos clasifican según ejemplos próximos, los árboles dividen el espacio mediante reglas y otros modelos aprenden fronteras de decisión de distintas formas. Cada alternativa responde de manera diferente a escala, ruido, tamaño de muestra y relaciones entre variables.',
+      'Una comparación útil usa la misma partición, transformaciones correctamente ajustadas y criterios equivalentes. La elección considera calidad predictiva, velocidad, memoria e interpretabilidad. No existe un algoritmo que sea siempre mejor para cualquier conjunto de datos.'
+    ],['Escala cuando las distancias o la optimización del algoritmo lo requieran.','Ajusta hiperparámetros mediante validación.','Compara matrices de confusión y resultados por clase.'],
+    'Un árbol pequeño puede explicar decisiones sobre frutas mediante reglas de peso y tamaño. Un clasificador de vecinos puede cambiar mucho si el peso domina la distancia por sus unidades.',
+    '¿Es justo comparar un modelo en entrenamiento y otro en prueba?','No. Deben evaluarse con los mismos casos no usados para ajustar sus parámetros y bajo el mismo criterio.'),
+    lesson('Neuronas, capas y activaciones','Explicar cómo una red transforma entradas en salidas.',[
+      'Una neurona calcula una combinación ponderada de entradas, añade un sesgo y aplica una activación. Los pesos controlan cuánto contribuye cada entrada. Las capas conectan estas operaciones para construir representaciones sucesivas de los datos.',
+      'Las activaciones no lineales, como ReLU, permiten aprender relaciones más flexibles. Apilar solo transformaciones lineales, sin activaciones no lineales, sigue produciendo una transformación lineal. El número de unidades de entrada debe corresponder a la representación de las características.'
+    ],['Entrada: características del caso.','Capas ocultas: transformaciones aprendidas.','Salida: puntuaciones o probabilidades estimadas para decidir la clase.'],
+    'Con x₁ = 2, x₂ = 3, w₁ = 0,5, w₂ = −1 y b = 1, resulta z = −1. Si se aplica ReLU, la salida es max(0, −1) = 0.',
+    '¿Qué aporta una activación no lineal?','Permite que la red represente relaciones no lineales. Sin ella, varias capas lineales pueden combinarse en una sola transformación lineal.'),
+    lesson('Cómo se entrena una red','Distinguir parámetros, pérdida, lotes y épocas.',[
+      'El entrenamiento compara la salida del modelo con la etiqueta real mediante una función de pérdida. La retropropagación calcula cómo cambia esa pérdida con los parámetros; el optimizador usa esa información para actualizar pesos y sesgos.',
+      'Un lote es un subconjunto utilizado para una actualización. Una época es un recorrido completo por los ejemplos de entrenamiento. La tasa de aprendizaje controla el tamaño de las actualizaciones: valores inadecuados pueden volver el proceso inestable o demasiado lento.'
+    ],['Pesos y sesgos son parámetros aprendidos.','Número de capas, tamaño del lote y tasa de aprendizaje son hiperparámetros.','Observa entrenamiento y validación a lo largo de las épocas.'],
+    'Con 100 ejemplos y lotes de 20, una época contiene cinco lotes. Entrenar diez épocas implica recorrer diez veces esos ejemplos, sin que eso garantice mejor generalización.',
+    '¿Más épocas siempre mejoran el modelo?','No. Después de cierto punto puede sobreajustarse: reduce la pérdida de entrenamiento mientras empeora en validación.'),
+    lesson('Probabilidades y umbrales','Comprender cómo las puntuaciones se convierten en decisiones.',[
+      'En clasificación binaria se puede usar una salida sigmoide entre 0 y 1 y declarar positiva una observación cuando p alcanza un umbral. En multiclase con categorías excluyentes suele usarse softmax y seleccionar la clase con mayor puntuación.',
+      'Una probabilidad estimada no es una certeza y puede estar mal calibrada. Cambiar el umbral modifica precisión y recall sin volver a entrenar. El umbral debe elegirse con validación y según el costo de los errores, no mirando la prueba final.'
+    ],['Identifica qué clase representa la probabilidad.','Define y documenta la regla, por ejemplo p ≥ 0,50.','Evalúa el efecto de cambiar el umbral sobre FP y FN.'],
+    'Un caso con p = 0,65 será positivo con umbral 0,50 y negativo con 0,70. La puntuación es la misma; cambió la regla de decisión.',
+    '¿Una puntuación de 0,90 garantiza que el caso pertenece a esa clase?','No. Es una estimación del modelo. Para interpretar probabilidades hay que evaluar, además, su calibración y la semejanza entre los datos nuevos y los de entrenamiento.'),
+    lesson('Clasificación de imágenes','Preparar imágenes y analizar errores visuales.',[
+      'Una imagen digital contiene valores de píxeles organizados por alto, ancho y canales. Para usar un modelo, las imágenes nuevas deben prepararse con el mismo tamaño, orden de canales y escalado que se utilizó durante entrenamiento.',
+      'Una red densa puede recibir una imagen aplanada en un vector. Una red convolucional aprovecha la estructura espacial mediante filtros compartidos. En ambos casos, fondos, iluminación o duplicados pueden crear atajos que producen buen desempeño aparente y fallos en imágenes nuevas.'
+    ],['Separa imágenes independientes y evita versiones de una misma imagen en conjuntos distintos.','Aplica consistentemente redimensionamiento y normalización.','Inspecciona ejemplos mal clasificados además de métricas agregadas.'],
+    'Una imagen de 28 × 28 en escala de grises contiene 784 valores. Al aplanarla, una red densa recibe un vector de longitud 784.',
+    '¿Por qué una imagen nueva debe normalizarse igual que las de entrenamiento?','Porque el modelo aprendió con una representación concreta. Cambiar la escala o los canales cambia el significado de sus entradas y puede degradar las predicciones.')
+  ],
+  4: [
+    lesson('Reconocer subajuste y sobreajuste','Interpretar diferencias entre entrenamiento y validación.',[
+      'El subajuste aparece cuando el modelo no captura relaciones relevantes: suele rendir mal tanto en entrenamiento como en validación. Puede deberse a una representación insuficiente, un modelo demasiado simple o un entrenamiento inadecuado.',
+      'En el sobreajuste, el modelo aprende particularidades del conjunto de entrenamiento que no se sostienen en otros datos. Un error bajo en entrenamiento y claramente mayor en validación es una señal. Antes de atribuirlo todo a complejidad, revisa también diferencias entre los conjuntos y errores de preparación.'
+    ],['Compara métricas de ambos conjuntos, no solo el resultado de entrenamiento.','Revisa que las particiones representen el uso esperado.','Considera más datos, mejores características o control de complejidad.'],
+    'Una red alcanza 99 % de exactitud en entrenamiento y 70 % en validación. La brecha sugiere sobreajuste, pero también conviene revisar duplicados, etiquetas y diferencias de distribución.',
+    'Si ambos conjuntos tienen un error alto, ¿debes asumir sobreajuste?','No. Puede haber subajuste, dificultades de optimización o variables poco informativas. La brecha entre conjuntos y el contexto ayudan a diagnosticar.'),
+    lesson('Curvas de aprendizaje y parada temprana','Elegir un estado del entrenamiento con evidencia de validación.',[
+      'Una curva de entrenamiento muestra una métrica a lo largo de las épocas. La curva de validación indica cómo evoluciona en ejemplos que no actualizan los pesos. Si entrenamiento mejora y validación empieza a empeorar, continuar puede perjudicar la generalización.',
+      'La parada temprana detiene el proceso cuando la métrica observada no mejora durante cierto número de épocas. Patience define cuánto se espera y min_delta qué magnitud cuenta como mejora. Restaurar los mejores pesos permite recuperar el estado con el mejor resultado observado.'
+    ],['Usa una métrica pertinente, como pérdida de validación.','No confundas la época de mejor resultado con la época en que se detiene el proceso.','Reserva un conjunto de prueba aparte para evaluar el modelo elegido.'],
+    'Si el mínimo de validación ocurre en la época 4 y se toleran dos épocas sin mejora, el entrenamiento puede detenerse después; restaurar pesos recupera el estado de la época 4.',
+    '¿Por qué la última época no siempre es la mejor?','Porque puede mejorar el ajuste a entrenamiento y a la vez empeorar la generalización. La selección se apoya en validación.'),
+    lesson('Regularización L1 y L2','Comprender cómo una penalización limita los pesos.',[
+      'La regularización modifica el objetivo de entrenamiento al añadir un costo asociado a los parámetros. L1 utiliza la suma de valores absolutos de los pesos; L2 utiliza la suma de sus cuadrados. Un coeficiente de regularización controla cuánto pesa la penalización.',
+      'L1 puede favorecer soluciones con pesos exactamente nulos en ciertos modelos. L2 tiende a repartir y reducir magnitudes. Una penalización excesiva puede provocar subajuste: regularizar no consiste en hacer los pesos tan pequeños como sea posible, sino en mejorar la evaluación fuera de entrenamiento.'
+    ],['Compara distintas fuerzas de regularización usando validación.','Mantén el escalado de variables consistente cuando afecte a la penalización.','Evalúa el cambio en desempeño, no solamente el tamaño de los pesos.'],
+    'Con pesos 2 y −3, la suma L1 es |2| + |−3| = 5. La suma de cuadrados L2 es 4 + 9 = 13; cada una se multiplica por su coeficiente.',
+    '¿Una regularización más fuerte siempre es mejor?','No. Puede reducir demasiado la flexibilidad y causar subajuste. La fuerza se selecciona con validación.'),
+    lesson('Dropout y capacidad de la red','Distinguir el comportamiento en entrenamiento e inferencia.',[
+      'Dropout desactiva aleatoriamente parte de las unidades durante entrenamiento para reducir la dependencia excesiva entre ellas. Su tasa indica la fracción de unidades que se desactiva en esa operación. No es una eliminación permanente de neuronas.',
+      'Durante la predicción habitual, dropout se desactiva y la biblioteca aplica la convención de escalado correspondiente. Su utilidad depende de la arquitectura y del problema. Reducir unidades o capas también puede controlar complejidad, y conviene comparar estas opciones.'
+    ],['No interpretes una tasa de dropout como porcentaje de datos eliminados.','Distingue modo de entrenamiento y modo de inferencia.','Combina técnicas solo si la validación respalda la decisión.'],
+    'Una tasa de 0,20 desactiva aproximadamente el 20 % de las unidades afectadas en una pasada de entrenamiento. Las unidades elegidas pueden cambiar en la siguiente pasada.',
+    '¿Dropout elimina para siempre una quinta parte de las neuronas con tasa 0,20?','No. La desactivación es temporal y aleatoria durante entrenamiento; en la inferencia habitual se utiliza la red con dropout desactivado.'),
+    lesson('Ajuste de hiperparámetros','Organizar una búsqueda y elegir con validación.',[
+      'Los hiperparámetros son decisiones que configuran el aprendizaje: unidades, capas, tasa de aprendizaje o regularización. La búsqueda define qué opciones se explorarán y cómo se compararán. Keras Tuner automatiza parte de ese proceso para redes neuronales.',
+      'No necesitas probar todas las combinaciones posibles. Un espacio acotado y justificado ayuda a controlar tiempo y recursos. Evaluar muchas configuraciones también puede adaptar las decisiones a la validación; por eso sigue siendo necesario reservar prueba y documentar la búsqueda.'
+    ],['Define una métrica objetivo y un presupuesto de intentos.','Mantén coherentes datos, preprocesamiento y criterios entre intentos.','Registra la configuración seleccionada y su resultado final.'],
+    'Puedes comparar redes con 16 o 32 unidades y dos tasas de aprendizaje: cuatro configuraciones. La ganadora se selecciona por validación, no por la menor pérdida de entrenamiento.',
+    '¿Qué diferencia hay entre un peso y el número de unidades?','Un peso se aprende durante el ajuste. El número de unidades configura la arquitectura y se trata como hiperparámetro.'),
+    lesson('Guardar, reutilizar y evaluar un modelo','Conservar el proceso necesario para predecir casos nuevos.',[
+      'Guardar los pesos o el modelo no basta si se pierde la preparación de los datos. Para reutilizarlo necesitas conocer las variables, su orden, las transformaciones ajustadas y, en clasificación, la correspondencia entre índices y etiquetas.',
+      'En el ejemplo de dígitos MNIST, una imagen propia debe convertirse al formato esperado. Tamaño, escala de grises, fondo y rango de valores influyen en la predicción. Evalúa ejemplos nuevos e identifica diferencias respecto a las imágenes con que se entrenó.'
+    ],['Conserva el modelo y las transformaciones necesarias.','Documenta forma de entrada, clases y reglas de preparación.','Comprueba una predicción de referencia después de volver a cargarlo.'],
+    'Si la red aprendió con dígitos claros sobre fondo oscuro y valores entre 0 y 1, una imagen oscura sobre fondo claro entre 0 y 255 necesita preparación coherente antes de predecir.',
+    '¿Por qué un modelo guardado puede fallar al usarlo en otra aplicación?','Porque pueden cambiar columnas, unidades, escalado, tamaño de imagen o codificación. La reutilización requiere preservar todo el proceso de entrada y salida.')
+  ],
+  5: [
+    lesson('Similitud y preparación para clustering','Definir qué significa que dos observaciones se parezcan.',[
+      'El clustering agrupa casos según características y una noción de similitud. Antes de elegir un algoritmo, define qué variables representan el fenómeno: si agrupas clientes por compras, incluir un identificador arbitrario puede distorsionar la distancia.',
+      'Con distancia euclidiana, las variables con magnitudes grandes pueden dominar. Estandarizar puede equilibrar escalas, pero también cambia la noción de cercanía. Seleccionar y transformar variables son decisiones analíticas que deben justificarse.'
+    ],['Excluye identificadores sin significado de similitud.','Revisa escalas, faltantes y valores extremos.','Decide si todas las características deben influir de manera comparable.'],
+    'Al combinar edad en años e ingreso en colones, una diferencia de miles de colones puede superar numéricamente cualquier diferencia de edad. El escalado modifica ese desequilibrio.',
+    '¿Dos registros con identificadores consecutivos son necesariamente similares?','No. El identificador normalmente solo distingue registros. Su cercanía numérica no representa similitud relevante para agrupar.'),
+    lesson('K-Means paso a paso','Entender asignación, actualización y convergencia.',[
+      'K-Means comienza con K centroides. Asigna cada observación al centro más cercano y actualiza cada centro calculando la media de las observaciones asignadas. Repite estas dos operaciones hasta cumplir el criterio de parada.',
+      'La inercia suma distancias cuadradas entre puntos y sus centros. El algoritmo busca reducirla, pero distintas inicializaciones pueden producir soluciones distintas. Su geometría suele funcionar mejor con grupos compactos bajo la distancia elegida; los valores extremos pueden desplazar las medias.'
+    ],['Selecciona K y una estrategia de inicialización.','Asigna puntos y recalcula centroides.','Revisa convergencia, estabilidad y tamaño de los grupos.'],
+    'Para [1, 2, 3, 8, 9, 10] y centros iniciales 1 y 8, los grupos son [1, 2, 3] y [8, 9, 10]. Sus nuevas medias son 2 y 9.',
+    '¿Por qué volver a ejecutar puede cambiar los grupos?','Porque una inicialización distinta puede conducir a otra solución. Controlar la aleatoriedad facilita reproducir; varias inicializaciones ayudan a buscar mejores ajustes.'),
+    lesson('Elegir el número de grupos','Combinar métricas, estabilidad e interpretación.',[
+      'La inercia tiende a disminuir al aumentar K, por lo que su mínimo por sí solo no decide cuántos grupos son útiles. El método del codo busca un punto donde añadir grupos produce mejoras relativamente menores, aunque ese punto no siempre es claro.',
+      'La silueta compara la cercanía dentro del propio grupo con la cercanía al grupo alternativo más próximo. Valores altos sugieren separación bajo la distancia usada, pero no garantizan utilidad. Revisa también grupos muy pequeños, estabilidad e interpretación.'
+    ],['Compara varios K y visualiza sus métricas.','Calcula silueta solo cuando exista una cantidad válida de grupos.','Justifica la selección con contexto, además de métricas.'],
+    'Si pasar de K = 2 a 3 reduce mucho la inercia y pasar de 3 a 4 la reduce poco, K = 3 puede ser un candidato. Falta revisar si sus segmentos tienen sentido.',
+    '¿El K con menor inercia es automáticamente el mejor?','No. Más grupos suelen reducir inercia, incluso hasta asignar un grupo a cada observación. La elección exige balancear estructura e interpretación.'),
+    lesson('DBSCAN y detección de ruido','Identificar grupos a partir de densidad.',[
+      'DBSCAN utiliza un radio de vecindad, eps, y un mínimo de observaciones, min_samples, para reconocer zonas densas. Conecta regiones densas y puede dejar puntos sin asignar a un clúster, marcándolos como ruido.',
+      'A diferencia de K-Means, no exige fijar el número de grupos y puede descubrir formas no esféricas. Sin embargo, es sensible a la escala y a sus parámetros; densidades muy diferentes entre grupos pueden dificultar una configuración única.'
+    ],['Prepara la escala antes de interpretar eps.','Distingue puntos centrales, de borde y ruido.','Analiza cuánto ruido se produce y si corresponde a casos relevantes.'],
+    'En una nube de clientes, DBSCAN puede encontrar dos zonas densas y dejar aislados a varios clientes con comportamientos muy distintos. Esos casos merecen revisión, no eliminación automática.',
+    '¿Que un punto sea ruido significa que está mal registrado?','No. Significa que no cumple el criterio de densidad bajo los parámetros elegidos. Puede ser un caso válido e interesante.'),
+    lesson('Clustering jerárquico','Leer agrupaciones a distintos niveles.',[
+      'En el enfoque aglomerativo, cada observación comienza como un grupo y se fusionan grupos sucesivamente. La medida de distancia y el criterio de enlace determinan cuáles se unen. Diferentes criterios pueden producir jerarquías distintas.',
+      'Un dendrograma representa las fusiones y sus niveles. Cortarlo a una altura seleccionada define una partición. La altura expresa la disimilitud o el costo de fusión según el método, no una cantidad de observaciones ni una precisión.'
+    ],['Define distancia y enlace de forma coherente.','Observa a qué niveles se fusionan grupos separados.','Considera el costo computacional al crecer el número de observaciones.'],
+    'Si dos grupos se unen solo a una altura mucho mayor que las fusiones internas, puede haber evidencia de separación. La interpretación depende de escala, distancia y enlace.',
+    '¿Qué obtienes al cortar un dendrograma a una altura?','Una partición en grupos: las ramas que permanecen separadas por debajo del corte definen los clústeres de ese nivel.'),
+    lesson('Interpretación de segmentos','Describir grupos sin atribuirles significados no demostrados.',[
+      'Después de agrupar, resume tamaño, distribución y características de cada segmento. Si trabajaste con variables escaladas, vuelve a unidades comprensibles para comunicar. Un número de clúster es solo una etiqueta arbitraria.',
+      'La interpretación debe basarse en los datos utilizados. Un segmento de visitas frecuentes no es necesariamente el más rentable. Contrasta las conclusiones con información pertinente y evita convertir asociaciones de grupo en certezas sobre cada individuo.'
+    ],['Describe tamaños y valores típicos, junto con su variabilidad.','Usa nombres de segmentos sustentados en características observadas.','Documenta límites y estabilidad ante otras configuraciones.'],
+    'Un grupo con muchas visitas y bajo gasto por visita puede describirse así. Llamarlo «clientes de mayor valor» necesitaría información adicional sobre ingresos, costos o rentabilidad.',
+    '¿Cómo comprobarías que la segmentación es útil?','Revisaría estabilidad, diferencias interpretables y su utilidad para una decisión concreta; una buena visualización por sí sola no demuestra utilidad.')
+  ],
+  6: [
+    lesson('Selección frente a transformación','Diferenciar conservar columnas y construir nuevas variables.',[
+      'La selección de características conserva un subconjunto de columnas originales. Puede reducir redundancia, simplificar interpretación y disminuir costos. No garantiza mejorar: eliminar variables también puede perder información útil.',
+      'La transformación construye una representación nueva, como los componentes de PCA. Puede resumir varias columnas en menos dimensiones, pero suele dificultar interpretar cada entrada directamente. La decisión depende del objetivo: explicación, compresión o predicción.'
+    ],['Selección: se mantienen nombres y significado de variables originales.','Transformación: se crean combinaciones u otras representaciones.','Evalúa el efecto en validación cuando el objetivo sea predictivo.'],
+    'Conservar solo peso y cilindrada es selección. Sustituirlas por una combinación ponderada de ambas es transformación.',
+    '¿Por qué reducir variables no asegura mejorar el modelo?','Porque la reducción puede eliminar información útil. Se debe comparar desempeño y complejidad usando una evaluación válida.'),
+    lesson('Información mutua','Interpretar una puntuación de dependencia con el objetivo.',[
+      'La información mutua mide dependencia entre variables y puede detectar relaciones que no son lineales. Una puntuación mayor indica más dependencia estimada bajo el procedimiento utilizado; no indica si la relación es positiva o negativa.',
+      'La estimación depende de los datos y del método. En scikit-learn hay funciones para objetivos de clasificación y de regresión. Evaluar cada característica por separado puede dejar fuera interacciones: dos variables poco informativas individualmente podrían ser útiles en conjunto.'
+    ],['Selecciona la función según el tipo de objetivo.','Calcula las puntuaciones utilizando entrenamiento.','No confundas dependencia con causalidad ni con contribución única al modelo.'],
+    'Para predecir MPG, puedes ordenar características por información mutua con el objetivo. La primera es una candidata para la regresión del proyecto, pero su puntuación no dice cuántas MPG cambia la respuesta.',
+    '¿Una puntuación alta prueba que una variable causa el objetivo?','No. Señala dependencia estimada. La causalidad requiere un planteamiento y evidencia adicionales.'),
+    lesson('SelectKBest y validación cruzada','Elegir cuántas características conservar sin filtrar información.',[
+      'SelectKBest calcula puntuaciones y conserva las K características mejor clasificadas según la función seleccionada. K es una configuración del proceso, por lo que puede compararse usando validación cruzada.',
+      'Si calculas la selección una vez con todos los datos y después haces validación cruzada, las filas de validación ya habrán influido en qué columnas se conservaron. La selección debe ajustarse nuevamente dentro de cada partición de entrenamiento.'
+    ],['Define candidatos de K que no superen el número de columnas disponibles.','Incluye selección y modelo dentro del mismo pipeline.','Compara con una alternativa que use todas las variables.'],
+    'Con cinco características, puedes comparar K = 1, 2, 3 y 5. Cada partición selecciona sus columnas usando únicamente sus propias filas de entrenamiento.',
+    '¿Qué información se filtra si seleccionas columnas antes de separar?','Se aprovecha la relación entre características y objetivo de observaciones que luego se presentan como no vistas. Eso puede inflar el desempeño estimado.'),
+    lesson('Fundamentos de PCA','Comprender componentes y escalado.',[
+      'PCA crea direcciones que capturan sucesivamente la mayor varianza disponible y son ortogonales entre sí. Cada componente es una combinación lineal de características. PCA no utiliza la variable objetivo para encontrar esas direcciones.',
+      'Las unidades influyen en la varianza. Por ello, suele estandarizarse antes cuando las columnas tienen escalas diferentes y se quiere una influencia comparable. Tanto el escalador como PCA deben ajustarse con entrenamiento cuando se integran en un proceso predictivo.'
+    ],['Distingue componentes de variables originales.','Inspecciona los pesos o cargas para comprender sus combinaciones.','No supongas que la dirección de mayor varianza es la más útil para predecir.'],
+    'En automóviles, peso y tamaño pueden variar juntos. Un componente puede resumir parte de esa variación común mediante una combinación de características.',
+    '¿PCA necesita las etiquetas para calcular los componentes?','No. Se basa en la variación de las características. Por eso conservar mucha varianza no garantiza conservar la información más predictiva del objetivo.'),
+    lesson('Varianza explicada y número de componentes','Elegir una dimensión e interpretar lo que conserva.',[
+      'La proporción de varianza explicada indica qué fracción de la variabilidad total representa un componente. La suma acumulada permite saber cuánto se conserva al utilizar los primeros componentes.',
+      'Un umbral como 90 % es un criterio de compresión, no una garantía de exactitud. Si los componentes alimentan un predictor, el número final también debe evaluarse según su desempeño en validación. Usar menos componentes reduce dimensiones, pero descarta parte de la variación.'
+    ],['Ordena e interpreta las proporciones por componente.','Calcula su suma acumulada y encuentra el mínimo que cumpla el criterio.','Compara el desempeño predictivo si ese es el propósito.'],
+    'Si las proporciones son 50 %, 25 %, 15 % y 10 %, dos componentes conservan 75 % y tres conservan 90 %. El mínimo para alcanzar 90 % es tres.',
+    '¿Conservar 90 % de varianza equivale a 90 % de aciertos?','No. La varianza describe dispersión de las características; los aciertos corresponden a la evaluación de una tarea de clasificación.'),
+    lesson('Pipeline y proyecto integrado','Documentar un proceso completo y reproducible.',[
+      'Un pipeline encadena transformaciones y un estimador para aplicar el mismo proceso de forma consistente. Durante validación cruzada, cada paso que aprende se ajusta en la partición de entrenamiento correspondiente. La prueba se transforma con los pasos ya ajustados.',
+      'En el proyecto del curso, el objetivo es predecir MPG mediante regresión y justificar la característica seleccionada por información mutua. Parte del instructivo original, revisa los datos, compara con una referencia y explica errores y limitaciones, además de mostrar métricas.'
+    ],['Define problema, variables y criterios de evaluación.','Separa datos y ajusta preparación y selección sin usar prueba.','Reporta MAE, otra métrica pertinente, residuos y conclusiones en contexto.'],
+    'Una entrega puede incluir descripción de datos, separación, ranking de información mutua en entrenamiento, selección, regresión, comparación con referencia y análisis final en prueba.',
+    '¿Qué hace una conclusión útil más allá de reportar un número?','Explica la magnitud del error en unidades del objetivo, los casos donde el modelo falla, la comparación con la referencia y las condiciones en que sus resultados pueden usarse.')
+  ]
+};
