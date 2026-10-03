@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explora, resuelve y practica Aprendizaje Automático I en seis semanas. Aula del Técnico en Gestión de Datos para el Análisis y Visualización.">
+  <meta name="theme-color" content="#122c43">
+  <title>Aprendizaje Automático I · Aula de aprendizaje</title>
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="stylesheet" href="styles.css">
+  <script src="content.js" defer></script>
+  <script src="lessons.js" defer></script>
+  <script src="visuals.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a href="#contenido" class="skip">Saltar al contenido</a>
+  <header class="topbar"><a href="#inicio" class="brand" aria-label="Inicio del curso"><span class="brand-symbol">AA<span>Ⅰ</span></span><span>AULA DE APRENDIZAJE<span class="brand-sub">Gestión de Datos</span></span></a><span class="course-tag">Curso · 6 semanas</span></header>
+  <main id="contenido">
+    <section id="home">
+      <div class="intro"><div><p class="eyebrow">TÉCNICO EN GESTIÓN DE DATOS PARA EL ANÁLISIS Y VISUALIZACIÓN</p><h1>Aprendizaje<br>Automático <span>I.</span></h1><p class="lead">De los datos a las decisiones. Explora los conceptos, resuelve ejercicios y pon a prueba lo aprendido.</p></div><aside class="intro-note"><span class="note-number">06</span><div><strong>semanas de aprendizaje</strong><p>Un recorrido desde los fundamentos hasta tu primer proyecto integrado.</p></div></aside></div>
+      <div class="section-heading"><h2>Tu ruta de aprendizaje</h2><span>Elige una semana para comenzar</span></div>
+      <div id="week-grid" class="week-grid"></div>
+      <div class="learning-guide"><span class="guide-label">EN CADA SEMANA</span><p><b>01</b> Explora los conceptos</p><p><b>02</b> Revisa un ejemplo</p><p><b>03</b> Practica y comprueba</p></div>
+    </section>
+    <section id="week-view" hidden aria-labelledby="week-title">
+      <nav class="breadcrumb" aria-label="Ubicación"><a href="#inicio">Ruta de aprendizaje</a><span>/</span><span id="breadcrumb-week"></span></nav>
+      <div class="week-header"><div><p class="eyebrow" id="week-label"></p><h1 id="week-title"></h1><p class="lead" id="week-description"></p></div><div id="large-badge" class="large-badge" aria-hidden="true"></div></div>
+      <nav class="tabs" aria-label="Secciones de la semana"><button data-tab="explora" class="tab active" aria-current="page">Explora</button><button data-tab="ejercicio" class="tab">Ejercicio resuelto</button><button data-tab="practica" class="tab">Practica</button><button data-tab="recursos" class="tab">Materiales</button></nav>
+      <div id="lesson-content"></div>
+      <nav class="week-navigation" aria-label="Navegación entre semanas"><a id="previous-week"></a><a href="#inicio">Ver las 6 semanas</a><a id="next-week"></a></nav>
+    </section>
+  </main>
+  <footer><span>Aprendizaje Automático I</span><span>Técnico en Gestión de Datos para el Análisis y Visualización</span></footer>
+</body>
+</html>
