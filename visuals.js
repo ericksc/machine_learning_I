@@ -87,6 +87,39 @@ window.CourseVisuals = (() => {
  data['1.2'].figure=()=>branches('¿Hay respuestas conocidas?','Sí: supervisado','No: no supervisado');
  data['1.2'].caption='Con respuestas conocidas: regresión para cantidades y clasificación para categorías. Sin etiquetas: agrupamiento o reducción de dimensionalidad, según el objetivo.';
  data['6.1'].figure=()=>branches('Reducir el número de variables','Seleccionar originales','Combinar con PCA');
+ data['3.7']=spec('De una regla a una hoja',['Elemento','Función','Ejemplo'],[['Nodo','Pregunta sobre una variable','¿Peso ≤ 140 g?'],['Rama','Resultado de la pregunta','Sí / No'],['Hoja','Clase mayoritaria','8 mandarinas y 2 naranjas → mandarina'],['max_depth','Límite de complejidad','Comparar 2, 3 y 5 con CV']],()=>branches('¿Peso ≤ 140 g?','Sí → mandarina','No → naranja'),'Árbol ilustrativo de una sola división. Las etiquetas de hoja y el umbral son didácticos, no reglas universales. La hoja izquierda tiene Gini 0,32.');
+ data['3.8']=spec('Votación de los tres vecinos',['Vecino','Distancia','Etiqueta'],[['1','0,20','Manzana'],['2','0,35','Naranja'],['3','0,50','Manzana']],()=>bars(['Manzana','Naranja'],[2,1]),'Voto uniforme con k = 3: manzana obtiene 2 votos y naranja 1. Las distancias corresponden a características ya escaladas.');
+ data['3.8'].figure=()=>svg(`
+ <path d="M50 45v295h340" fill="none" stroke="#8da6b8"/>
+ ${text(50,28,'Característica 2 (escalada)')}${text(390,368,'Característica 1 (escalada)','text-anchor="end"')}
+ <circle cx="230" cy="200" r="100" fill="#e2f3ed" fill-opacity=".55" stroke="#08796e" stroke-dasharray="6 5"/>
+ <path d="M230 200h40" stroke="#2468ac" stroke-width="4"/>
+ <path d="M230 200v-70" stroke="#b05220" stroke-width="4"/>
+ <path d="M230 200H130" stroke="#08796e" stroke-width="4"/>
+ <circle cx="270" cy="200" r="9" fill="#08796e"/><circle cx="130" cy="200" r="9" fill="#08796e"/>
+ <rect x="221" y="121" width="18" height="18" rx="2" fill="#b05220"/>
+ <circle cx="85" cy="90" r="8" fill="#08796e"/><circle cx="120" cy="305" r="8" fill="#08796e"/>
+ <rect x="340" y="75" width="16" height="16" fill="#b05220"/><rect x="350" y="292" width="16" height="16" fill="#b05220"/>
+ <path d="M230 188l12 12-12 12-12-12Z" fill="#8053a2" stroke="white" stroke-width="2"/>
+ ${text(245,270,'Caso nuevo ?')}
+ <path d="M250 200l38 28" stroke="#2468ac" stroke-width="2" fill="none"/>
+ <rect x="276" y="218" width="120" height="34" rx="7" fill="white" stroke="#2468ac" stroke-width="2"/>
+ ${text(336,242,'d₁ = 0,20','text-anchor="middle" style="font-size:20px;font-weight:700;fill:#2468ac"')}
+ <path d="M230 160h18" stroke="#b05220" stroke-width="2"/>
+ <rect x="248" y="143" width="120" height="34" rx="7" fill="white" stroke="#b05220" stroke-width="2"/>
+ ${text(308,167,'d₂ = 0,35','text-anchor="middle" style="font-size:20px;font-weight:700;fill:#b05220"')}
+ <path d="M175 200v-16" stroke="#08796e" stroke-width="2"/>
+ <rect x="80" y="149" width="120" height="34" rx="7" fill="white" stroke="#08796e" stroke-width="2"/>
+ ${text(140,173,'d₃ = 0,50','text-anchor="middle" style="font-size:20px;font-weight:700;fill:#08796e"')}
+ <rect x="417" y="76" width="205" height="225" rx="12" fill="#eef3f8"/>
+ ${text(435,106,'k = 3 vecinos')}${text(435,145,'● Manzana: 2 votos')}${text(435,181,'■ Naranja: 1 voto')}
+ ${text(435,230,'Clase predicha:')}${text(435,263,'MANZANA')}
+ ${text(50,402,'● Manzana     ■ Naranja     ◆ Caso sin etiqueta')}
+ `,'KNN con k igual a 3: el rombo es un caso nuevo. Sus vecinos a distancias 0,20, 0,35 y 0,50 son manzana, naranja y manzana. Gana manzana con dos votos. Los puntos fuera del círculo no votan.',425);
+ data['3.8'].caption='Ejemplo geométrico con igual escala en ambos ejes: el círculo llega hasta el tercer vecino (distancia 0,50). Las líneas unen el caso nuevo con los tres vecinos que votan. Los demás puntos quedan fuera de la votación. No es una frontera aprendida ni un radio fijo: con otra consulta el radio puede cambiar.';
+ data['3.9']=spec('De la puntuación a la probabilidad',['z','Sigmoide aproximada','Clase con umbral 0,50'],[['−4','0,018','0'],['−2','0,119','0'],['0','0,500','1'],['2','0,881','1'],['4','0,982','1']],()=>lines([{name:'p(y = 1 | x)',values:[-4,-3,-2,-1,0,1,2,3,4].map(z=>1/(1+Math.exp(-z)))}],[-4,-3,-2,-1,0,1,2,3,4],'Probabilidad estimada','Puntuación z'),'Sigmoide calculada en nueve puntos unidos por segmentos. En z = 0, p = 0,50; la probabilidad siempre está entre 0 y 1.');
+ data['3.10']=spec('Cinco rondas, un test reservado',['Ronda','Entrena','Valida','F1 macro ilustrativo'],[['1','Pliegues 2, 3, 4, 5','Pliegue 1','0,80'],['2','Pliegues 1, 3, 4, 5','Pliegue 2','0,85'],['3','Pliegues 1, 2, 4, 5','Pliegue 3','0,75'],['4','Pliegues 1, 2, 3, 5','Pliegue 4','0,90'],['5','Pliegues 1, 2, 3, 4','Pliegue 5','0,80']],()=>svg(Array.from({length:5},(_,c)=>text(187+c*74,28,'P'+(c+1),'text-anchor="middle"')).join('')+Array.from({length:5},(_,r)=>text(22,64+r*43,`Ronda ${r+1}`)+Array.from({length:5},(_,c)=>`<rect x="${155+c*74}" y="${40+r*43}" width="64" height="32" rx="5" fill="${r===c?'#b05220':'#08796e'}"/>${text(187+c*74,62+r*43,r===c?'V':'E','text-anchor="middle" style="fill:white"')}`).join('')).join('')+text(24,287,'E: entrenamiento · V: validación')+text(24,313,'Test: separado durante todas las rondas'),'Matriz de cinco rondas. En cada fila un pliegue valida y cuatro entrenan; el test no participa.',340),'Cada fila representa un modelo nuevo. Ejemplo con 80 casos de desarrollo: 64 entrenan y 16 validan en cada ronda. Los 20 casos de test quedan fuera.');
+ data['3.11']=spec('Comparar los dos escaladores',['Criterio','StandardScaler','MinMaxScaler'],[['Fórmula','(x − media) / desviación','(x − mínimo) / (máximo − mínimo)'],['Resultado en entrenamiento','Media 0 y varianza 1 si no es constante','Rango [0, 1] por defecto'],['Uso inicial habitual','Logística regularizada, SVM, PCA','Entradas en un intervalo común'],['KNN y redes','Comparar con validación cruzada','Comparar con validación cruzada'],['Valores extremos','Sensible','Sensible; comprime valores centrales'],['Caso nuevo x = 40','2,449','1,5']],()=>lines([{name:'StandardScaler',values:[-1.224744871,0,1.224744871,2.449489743]},{name:'MinMaxScaler',values:[0,.5,1,1.5]}],[10,20,30,40],'Valor transformado','Valor original x'),'Cálculos con entrenamiento [10, 20, 30]. El punto 40 es nuevo: se transforma sin reajustar. Las líneas muestran dos escalas distintas, no desempeños de modelos.');
  function table(title,headers,rows){return `<div class="visual-table-wrap" role="region" aria-label="${escape(title)}" tabindex="0"><table class="visual-table"><caption>${escape(title)}</caption><thead><tr>${headers.map(h=>`<th scope="col">${escape(h)}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map((v,i)=>i===0?`<th scope="row">${escape(v)}</th>`:`<td>${escape(v)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;}
  function render(w,index){const v=data[`${w}.${index+1}`];if(!v)return '';return `<section class="visual-support"><p class="micro-label">OBSERVA Y COMPARA</p><h3>${escape(v.title)}</h3>${table('Tabla de apoyo · '+v.title,v.headers,v.rows)}<figure tabindex="0" aria-label="Figura de apoyo; desplazable horizontalmente en pantallas pequeñas">${v.figure()}<figcaption>${escape(v.caption)}</figcaption></figure></section>`;}
  const exerciseIndex={1:4,2:1,3:4,4:1,5:1,6:4};
