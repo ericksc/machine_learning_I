@@ -21,3 +21,9 @@
 .visual-table-wrap:focus-visible,.visual-support figure:focus-visible{outline:3px solid #147bad;outline-offset:3px}
 .panel.visual-support{padding-top:26px}
 @media(max-width:600px){.visual-support{margin:24px 0}.visual-support figcaption{padding:12px 14px}.visual-table{font-size:.85rem}}
+
+/* Controles y figuras de regresión del badge 2 */
+#neuron-regression label { display:block; margin:1rem 0 .35rem; font-weight:600; }
+#neuron-regression input[type="number"], #neuron-regression select { width:100%; max-width:32rem; padding:.65rem; border:1px solid #8da6b8; border-radius:.4rem; font:inherit; background:#fff; color:#122c43; }
+#neuron-regression button { margin:.25rem .2rem .25rem 0; padding:.6rem .8rem; font:inherit; cursor:pointer; }
+#neuron-regression svg text { font-family:inherit; }
