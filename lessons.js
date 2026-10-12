@@ -82,7 +82,7 @@ window.LESSONS = {
       'La clasificación predice una categoría. Un problema binario tiene dos clases; uno multiclase tiene más de dos categorías mutuamente excluyentes. La codificación numérica es una representación de las etiquetas, no una escala de cantidad.',
       'Revisa cuántos ejemplos hay de cada clase y qué errores importan. En datos independientes, una partición estratificada puede ayudar a mantener proporciones similares. Debe respetarse igualmente cualquier estructura temporal o de grupos para evitar fuga.'
     ],['Define las clases y verifica que las etiquetas sean consistentes.','Identifica clases poco representadas y casos ambiguos.','Selecciona métricas globales y por clase.'],
-    'En frutas, 0 = manzana, 1 = naranja y 2 = pera. Predecir 2 no significa el doble de 1: son categorías diferentes.',
+    'En data_frutas.csv, 0 = manzana, 1 = mandarina, 2 = naranja y 3 = limón. Los códigos representan categorías, no cantidades.',
     '¿Por qué revisar las cantidades por clase antes de separar?','Porque una clase escasa podría quedar mal representada, dificultando tanto el aprendizaje como una evaluación fiable de sus errores.'),
     lesson('Comparación de clasificadores','Relacionar el algoritmo con los datos y comparar de forma justa.',[
       'Los vecinos cercanos clasifican según ejemplos próximos, los árboles dividen el espacio mediante reglas y otros modelos aprenden fronteras de decisión de distintas formas. Cada alternativa responde de manera diferente a escala, ruido, tamaño de muestra y relaciones entre variables.',

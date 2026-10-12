@@ -4,7 +4,7 @@ Sitio estático en español para el Técnico en Gestión de Datos para el Análi
 
 ## Uso
 
-Abra `dist/index.html` en un navegador. No requiere instalación ni conexión para leer los contenidos, realizar los laboratorios o responder las autoevaluaciones. Los cuadernos requieren un entorno Python independiente.
+Abra `index.html` en un navegador. No requiere instalación ni conexión para leer los contenidos, realizar los laboratorios o responder las autoevaluaciones. Los cuadernos requieren un entorno Python independiente.
 
 El sitio contiene seis accesos semanales, cuatro secciones por semana y 42 subsecciones temáticas detalladas en Explora. Cada subsección tiene objetivo, explicación, puntos clave, ejemplo aplicado y pregunta con respuesta orientativa. El índice numerado permite navegar directamente; cada tema tiene un enlace propio, por ejemplo `#semana-2/explora/4`.
 
@@ -14,13 +14,17 @@ También incluye seis laboratorios interactivos, dieciocho preguntas con retroal
 
 ## Edición
 
-- `dist/content.js`: contenido docente, preguntas y recursos.
-- `dist/lessons.js`: 42 subsecciones detalladas, seis por semana, siete en la semana 2 y once en la semana 3.
-- `dist/visuals.js`: tablas, diagramas y gráficos educativos por subsección.
-- `dist/app.js`: navegación, laboratorios y autoevaluación.
-- `dist/styles.css`: diseño adaptable y accesibilidad.
-- `dist/materiales/`: copias de los recursos seleccionados; los cuadernos distribuidos no contienen salidas de ejecución.
+- `content.js`: contenido docente, preguntas y recursos.
+- `lessons.js`: 42 subsecciones detalladas, seis por semana, siete en la semana 2 y once en la semana 3.
+- `visuals.js`: tablas, diagramas y gráficos educativos por subsección.
+- `app.js`: navegación, laboratorios y autoevaluación.
+- `styles.css`: diseño adaptable y accesibilidad.
+- `materiales/`: copias de los recursos seleccionados; los cuadernos distribuidos no contienen salidas de ejecución.
 
 Los laboratorios usan ejemplos didácticos pequeños. Los fragmentos Python son referencias para los cuadernos, no un ejecutor Python integrado.
 
-`dist/curriculum.js` ordena los temas y sus figuras e incorpora definiciones de apoyo. Semana 3: fundamentos, validación, escalamiento, árbol, KNN, logística, umbrales, comparación, neuronas, entrenamiento e imágenes.
+`curriculum.js` ordena los temas y sus figuras e incorpora definiciones de apoyo. Semana 3: fundamentos, validación, escalamiento, árbol, KNN, logística, umbrales, comparación, neuronas, entrenamiento e imágenes.
+
+## Badge 3: clasificación desde cero
+
+Los once temas finales se definen en `badge3-beginners.js`: características, etiquetas, preparación y evaluación, clasificadores y redes neuronales. La práctica incluye árbol, KNN, umbral, red de frutas, dígitos y Fashion-MNIST. `badge3-labs.js` usa modelos entrenados previamente y calcula predicciones en el navegador. Se incluyen imágenes reales y los cuadernos de prendas y fotografías.
